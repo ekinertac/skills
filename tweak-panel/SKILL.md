@@ -9,7 +9,7 @@ Scaffolds a floating, draggable control panel directly inside your running app. 
 
 ## How It Works
 
-1. Run `detect-framework.sh` to identify the stack and where to put the panel file
+1. Inspect the project (package.json, config files, directory structure) to identify the stack and where to create the panel file
 2. Extract every tweakable param from the target component: numbers → sliders, colors → color pickers, booleans → toggles, enums → selects
 3. Scaffold the panel file in the right location for the detected stack (see below)
 4. Tell the user which URL to visit and which dev server command to run if needed
@@ -18,11 +18,7 @@ Scaffolds a floating, draggable control panel directly inside your running app. 
 
 ## Usage
 
-```bash
-bash /mnt/user-data/uploads/tweak-panel/scripts/detect-framework.sh
-```
-
-Run this first. It outputs JSON describing the stack and the suggested panel file path.
+Invoke with `/tweak-panel` or ask the agent to "build a tweak panel for [component]".
 
 **Supported stacks and where the panel is created:**
 
