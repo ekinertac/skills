@@ -1,6 +1,6 @@
 ---
 name: tweak-panel
-description: Skip the "a bit more / a bit less" loop — build a floating draggable control panel inside your running app so you can tune parameters yourself, then paste the values back to apply them. For non-browser apps (TUI, CLI, backend, API), writes a tweak-panel.json file instead. Use when tweaking visual styles, animation timing, numeric thresholds, or any set of config values interactively. Trigger phrases: "tweak panel", "control panel", "let me tune this myself", "build a panel for this".
+description: 'Skip the "a bit more / a bit less" loop — build a floating draggable control panel inside your running app so you can tune parameters yourself, then paste the values back to apply them. For non-browser apps (TUI, CLI, backend, API), writes a tweak-panel.json file instead. Use when tweaking visual styles, animation timing, numeric thresholds, or any set of config values interactively. Trigger phrases: "tweak panel", "control panel", "let me tune this myself", "build a panel for this".'
 ---
 
 # Tweak Panel
