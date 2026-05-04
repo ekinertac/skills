@@ -125,13 +125,15 @@ This framing matters. It shifts the mode from "evaluate this plan" (which trigge
 ### step 2: generate failure reasons (raw premortem)
 
 
-Run the raw premortem as a single comprehensive analysis. No prescribed categories, no lenses, no constraints. Just the core Klein method:
+Run the raw premortem as a single comprehensive analysis. You must cover all three death categories — each has a different failure mechanic and a different prevention strategy. Missing any one of them makes the premortem incomplete:
 
+- **Technical death** — the thing broke, didn't ship, couldn't scale, or was too hard to build
+- **Market death** — nobody wanted it, the wrong people bought it, or the timing was off
+- **Founder death** — the person behind it lost interest, burned out, got distracted, or gave up
 
-"This plan has failed 6 months from now. Generate every genuine reason it could have died. Be comprehensive. Be specific. Ground every reason in the actual details of the plan. Don't pad with weak reasons and don't stop early if there are more."
+Within each category, generate every genuine reason specific to this plan. Some categories might have one real failure mode; others might have three. Don't force symmetry — find what's actually real.
 
-
-The output should be a comprehensive list of failure reasons, each stated in 1-2 sentences. Be honest and thorough. Some plans might have 4 genuine failure modes. Others might have 9. The number should be whatever is real for this specific plan.
+The output should be a comprehensive list of failure reasons across all three categories, each stated in 1-2 sentences. Be honest and thorough.
 
 
 Each failure reason should be:
@@ -150,22 +152,19 @@ Take every failure reason from step 2 and spawn one sub-agent per reason, all in
 
 
 ```
-You are an investigator in a premortem analysis. You've been assigned one specific failure reason to analyze in depth.
+You are the user, 6 months in the future, writing a retrospective on why this plan failed. You are not an analyst giving advice — you are someone who lived through this and is now explaining what happened. Write in first person. Use "I" and "we." Make it feel like a real postmortem someone actually wrote after losing.
 
 
-The plan:
+The plan (as it existed before execution):
 ---
 [full context: what it is, who it's for, what success looks like, plus relevant workspace context]
 ---
 
 
-PREMORTEM FRAME: It is 6 months from now. This plan has failed.
-
-
 YOUR ASSIGNED FAILURE REASON: [the specific failure reason from step 2]
 
 
-Your job is to go deep on this one failure. Write the story of how it actually played out. Be specific. Use details from the plan. Make it feel real, like a case study of something that actually happened.
+Go deep on this one. You lived through it.
 
 
 Your output should include:
@@ -199,13 +198,16 @@ After all agents complete, read every deep-dive and produce the synthesis:
 2. **The Most Dangerous Failure** — Which failure scenario would cause the most damage if it happened, even if it's less likely? This is the one worth insuring against.
 
 
-3. **The Hidden Assumption** — Across all the failure analyses, what's the single biggest assumption the user is making that they probably haven't questioned? This is often where the real value of the premortem lives: the thing that's so obvious to the user that they forgot it was an assumption.
+3. **The Silent Assumption** — Across all the failure analyses, what's the single biggest assumption the user is making that they haven't explicitly stated or questioned? Not a risk — an assumption so obvious to them they forgot it was an assumption. Usually of the form "X type of person will do Y." Name it directly. This is often where the real value of the premortem lives.
 
 
 4. **The Revised Plan** — Based on the failure scenarios, what specific changes would make the plan more resilient? Be concrete. Don't say "consider your pricing." Say "test pricing at $X with 20 people before committing to it publicly." Each revision should map directly to a specific failure scenario.
 
 
-5. **The Pre-Launch Checklist** — 3-5 specific things the user should verify, test, or put in place before executing. Each one should prevent or detect one of the failure modes identified.
+5. **This Week** — The revised plan is only useful if the user acts on it. List 2-3 specific things they can do *this week* to either validate the plan's core assumptions or reduce the most dangerous failure modes. Not someday tasks — things with a clear action and a clear signal they'll get back. If a revised plan item can't be turned into a this-week action, it's not concrete enough.
+
+
+6. **The Pre-Launch Checklist** — 3-5 specific things the user should verify, test, or put in place before executing. Each one should prevent or detect one of the failure modes identified.
 
 
 ### step 5: generate the premortem report
@@ -292,9 +294,11 @@ Also provide a concise summary in the chat: the most likely failure, the hidden 
 
 - **Always spawn all failure agents in parallel.** Sequential spawning wastes time and lets earlier responses influence later ones.
 - **Always set the premortem frame explicitly.** "This has already failed" is the psychological mechanism that makes this work. Without it, the analysis defaults to polite risk assessment instead of honest failure identification.
-- **Be comprehensive but not padded.** Find every genuine failure reason. Don't stop at 3 if there are 7. But don't force 7 if there are only 3. The number should be whatever is real for this specific plan.
+- **Always cover all three death categories.** Technical, market, and founder failures have completely different prevention strategies. A premortem that only finds market failures misses the founder who will get bored in 4 months. Force coverage of all three even if some only have one real failure mode.
+- **Be comprehensive but not padded.** Find every genuine failure reason within each category. Don't stop at 3 if there are 7. But don't force 7 if there are only 3. The number should be whatever is real for this specific plan.
 - **The synthesis is the product.** Most users will read the synthesis and skim the individual failure cards. Make the synthesis specific and actionable.
 - **Don't sugarcoat.** The whole point of a premortem is to tell the user things they don't want to hear before reality does. If a plan has serious problems, say so directly.
 - **The revised plan must be concrete.** Don't say "consider testing your pricing." Say "run a $47 pilot with 20 people before committing to the full $297 workshop." Every revision should be something the user can actually do this week.
+- **The "This Week" section is not optional.** Seeing the failures is not the same as acting on them. The premortem is only useful if it changes what the user does in the next 7 days. If the revised plan doesn't translate into this-week actions, it will be read and forgotten.
 - **Respect the minimum context threshold.** Running a premortem on insufficient context produces generic failures that waste the user's time. It's better to ask one more question than to produce a bad premortem.
 - **This is not the LLM Council.** The council gives multiple perspectives on a decision right now. The premortem sends Claude into the future where the decision already failed and works backward to explain why. Different psychological mechanism, different output. If the user seems to want multiple perspectives rather than failure analysis, suggest the council instead.
