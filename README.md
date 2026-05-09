@@ -8,6 +8,7 @@ A collection of agent skills for Claude Code and other AI agents.
 npx skills add ekinertac/skills/tweak-panel
 npx skills add ekinertac/skills/macos-notarize
 npx skills add ekinertac/skills/pre-mortem
+npx skills add ekinertac/skills/html-effectiveness
 ```
 
 ## Skills
@@ -33,3 +34,11 @@ Full guide for signing and notarizing a macOS `.app` for distribution outside th
 Assume the plan already failed 6 months from now — then work backward. Spawns parallel sub-agents across three mandatory death categories (technical, market, founder), each writing as your future self. Synthesizes into a ranked report with the silent assumption exposed, a concrete revised plan, and a "this week" action list. Credit: [@itsolelehmann](https://x.com/itsolelehmann)
 
 [→ View skill](./pre-mortem/SKILL.md)
+
+---
+
+### html-effectiveness
+
+Turn document-shaped requests into single shareable HTML artifacts instead of walls of markdown — for plans, PR reviews, status reports, design systems, custom editors, and more. Routes the request to one of 19 use-case templates drawn from the demos in `references/`, composes the artifact from a small library of HTML building blocks (`patterns.md`), and links a shared `styles.css` so output stays compact. Inspired by [@trq212](https://x.com/trq212)'s post on the unreasonable effectiveness of HTML.
+
+[→ View skill](./html-effectiveness/SKILL.md)

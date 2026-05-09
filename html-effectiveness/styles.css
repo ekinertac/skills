@@ -1,0 +1,326 @@
+/*
+ * styles.css — html-effectiveness skill
+ *
+ * Shared stylesheet for HTML artifacts produced by the skill. Each artifact
+ * links this file via <link rel="stylesheet" href="./styles.css"> rather than
+ * inlining it — saves output tokens and centralizes the visual identity.
+ *
+ * The master copy lives in the html-effectiveness skill folder alongside SKILL.md.
+ * Each generated artifact gets a sibling copy of this stylesheet.
+ *
+ * Contents in order:
+ *   1. :root design tokens (palette, type stacks, shape)
+ *   2. Reset
+ *   3. Body defaults
+ *   4. Typography (headings, code/pre)
+ *   5. Utility classes
+ */
+
+:root {
+  /* ── palette ─────────────────────────── */
+  --ivory:   #FAF9F5;
+  --paper:   #FFFFFF;
+  --slate:   #141413;
+  --clay:    #D97757;
+  --clay-d:  #B85C3E;
+  --oat:     #E3DACC;
+  --olive:   #788C5D;
+  --rust:    #B04A3F;
+
+  /* neutrals */
+  --g100:    #F0EEE6;
+  --g200:    #E6E3DA;
+  --g300:    #D1CFC5;
+  --g500:    #87867F;
+  --g700:    #3D3D3A;
+
+  /* ── type stacks ─────────────────────── */
+  --serif: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  /* ── shape ───────────────────────────── */
+  --radius-card:  14px;
+  --radius-panel: 12px;
+  --radius-row:   8px;
+  --border:       1.5px solid var(--g300);
+}
+
+/* ── reset ───────────────────────────── */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* ── body ────────────────────────────── */
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--slate);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── typography ──────────────────────── */
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+h1 { font-size: 38px; line-height: 1.15; }
+h2 { font-size: 26px; line-height: 1.2; }
+h3 { font-size: 20px; line-height: 1.25; }
+
+p { margin: 0 0 14px; }
+
+code, pre, kbd, samp {
+  font-family: var(--mono);
+}
+
+a { color: var(--clay); text-decoration-color: var(--oat); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--clay); }
+
+hr.rule {
+  border: none;
+  border-top: 1px solid var(--g300);
+  margin: 0 0 22px;
+}
+
+/* ── utility: eyebrow label ──────────── */
+/* canonical: index.html, 11-status-report.html */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g500);
+  margin-bottom: 12px;
+}
+
+/* ── utility: section header ─────────── */
+/* canonical: 16-implementation-plan.html, 18-editor-triage-board.html */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.sec-head .num {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--oat);
+  color: var(--slate);
+  padding: 3px 9px;
+  border-radius: 8px;
+}
+.sec-intro {
+  font-size: 14.5px;
+  color: var(--g700);
+  max-width: 720px;
+  margin: 0 0 24px;
+}
+
+/* ── utility: card and grid ──────────── */
+/* canonical: index.html */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(316px, 1fr));
+  gap: 20px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(20, 20, 19, 0.10);
+  border-color: var(--slate);
+}
+.card .body { padding: 18px 20px 16px; flex: 1; display: flex; flex-direction: column; }
+.card .title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.22;
+  color: var(--slate);
+  margin-bottom: 7px;
+  letter-spacing: -0.008em;
+}
+.card .desc { font-size: 13.5px; color: var(--g700); line-height: 1.5; flex: 1; }
+
+/* ── utility: thumbnail panel ────────── */
+/* canonical: index.html */
+.thumb {
+  height: 132px;
+  background: var(--g100);
+  border-bottom: 1.5px solid var(--g200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.thumb svg { width: 100%; height: 100%; overflow: visible; }
+
+/* ── utility: prompt box ─────────────── */
+/* canonical: 16-implementation-plan.html */
+.prompt-box {
+  background: var(--g100);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 16px 20px;
+  font-size: 14.5px;
+  color: var(--g700);
+}
+.prompt-box .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--g500);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── utility: summary / stat cards ───── */
+/* canonical: 11-status-report.html (.stat-card), 16-implementation-plan.html (.summary cell) */
+.summary-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+@media (max-width: 720px) {
+  .summary-band { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-card {
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 20px 22px 18px;
+}
+/* .stat-card.warn — left accent border for alert/incident cards; see 11-status-report.html */
+.stat-card.warn {
+  border-left: 4px solid var(--clay);
+  padding-left: 19px;
+}
+.stat-card .stat-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--g500);
+  margin-bottom: 6px;
+}
+/* .stat-num — the primary large number inside a stat card (44px, canonical in 11-status-report.html).
+   Use .stat-num for status/velocity reports. Use .stat-value for compact summaries (28px). */
+.stat-card .stat-num {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--slate);
+  margin-bottom: 8px;
+}
+.stat-card .stat-value {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--slate);
+  line-height: 1.1;
+}
+/* .stat-delta — small trend line below the number; use .up/.flat modifier classes */
+.stat-card .stat-delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-top: 6px;
+}
+.stat-card .stat-delta.up   { color: var(--olive); }
+.stat-card .stat-delta.flat { color: var(--g500); }
+
+/* ── utility: swatch ─────────────────── */
+/* canonical: 05-design-system.html */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 20px 16px;
+}
+.swatch .chip {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-row);
+  border: var(--border);
+  margin-bottom: 8px;
+}
+.swatch .hex   { font-family: var(--mono); font-size: 12px; color: var(--g700); display: block; }
+.swatch .token { font-family: var(--mono); font-size: 11px; color: var(--g500); display: block; }
+
+/* ── utility: sticky toolbar ─────────── */
+/* canonical: 18-editor-triage-board.html */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--ivory);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0 12px;
+  margin-bottom: 14px;
+  border-bottom: 1.5px solid var(--g200);
+}
+
+/* ── utility: highlights list ────────── */
+/* canonical: 11-status-report.html
+   A bullet list where each item uses a small clay square instead of a disc.
+   Use for 3–5 key takeaways at the top of a status report or post-mortem. */
+.highlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.highlights li {
+  position: relative;
+  padding: 0 0 14px 26px;
+  font-size: 15px;
+  color: var(--g700);
+}
+.highlights li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--clay);
+}
+.highlights li strong { color: var(--slate); font-weight: 600; }
+
+/* ── utility: chart panel ────────────── */
+/* canonical: 11-status-report.html
+   White bordered panel for inline SVG charts. Pairs with inline-svg-figure
+   pattern (patterns.md §10) — use .chart-panel as the outer wrapper when the
+   SVG needs a contained white card rather than floating in the page. */
+.chart-panel {
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 24px 28px 18px;
+}
+.chart-panel svg { display: block; width: 100%; height: auto; }
+.chart-caption {
+  font-size: 12px;
+  color: var(--g500);
+  margin-top: 12px;
+}
+
+/* ── utility: page wrap ──────────────── */
+/* canonical: 11-status-report.html, 16-implementation-plan.html */
+.page { max-width: 980px; margin: 0 auto; padding: 56px 24px 96px; }
+.page-wide { max-width: 1180px; }
