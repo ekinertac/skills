@@ -1,6 +1,6 @@
 ---
 name: macos-notarize
-description: Signs, notarizes, and staples a macOS .app for distribution. Covers Developer ID codesigning, notarytool submission, stapling, packaging for GitHub Releases, and diagnosing common Apple notarization errors. Trigger phrases: "notarize", "sign the app", "release macos app", "codesign", "notarization".
+description: 'Signs, notarizes, and staples a macOS .app for distribution. Covers Developer ID codesigning, notarytool submission, stapling, packaging for GitHub Releases, and diagnosing common Apple notarization errors. Trigger phrases: "notarize", "sign the app", "release macos app", "codesign", "notarization".'
 allowed-tools: [Bash, Read, Edit]
 ---
 
