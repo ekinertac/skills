@@ -1,6 +1,6 @@
 <!--
 File: html-effectiveness/patterns.md
-Role: HTML markup snippets for the 11 recurring building blocks across the
+Role: HTML markup snippets for the 12 recurring building blocks across the
       reference demos. CSS for these classes lives in styles.css; do not
       redeclare it here.
 Read alongside: SKILL.md (router), styles.css (style source of truth).
@@ -8,7 +8,7 @@ Read alongside: SKILL.md (router), styles.css (style source of truth).
 
 # patterns.md
 
-Eleven reusable HTML building blocks. Each pattern: **Use when**, **Markup**,
+Twelve reusable HTML building blocks. Each pattern: **Use when**, **Markup**,
 optional **Notes**. All classes referenced here are defined in `styles.css`.
 
 ---
@@ -264,7 +264,7 @@ optional **Notes**. All classes referenced here are defined in `styles.css`.
   gap: 14px;
   padding: 8px 0;
 }
-.carry-item + .carry-item { border-top: 1px solid rgba(20,20,19,0.08); }
+.carry-item + .carry-item { border-top: 1px solid var(--g300); }
 .carry-tag {
   font-family: var(--mono);
   font-size: 11px;
@@ -281,3 +281,53 @@ optional **Notes**. All classes referenced here are defined in `styles.css`.
 ```
 
 Canonical demo: `references/11-status-report.html`.
+
+---
+
+## 12. theme-toggle
+
+**Use when:** the user wants a manual light/dark switch. Optional — `styles.css`
+already auto-follows the OS via `prefers-color-scheme`. Add this only to give a
+deliberate override (the button writes `data-theme` on `<html>`, which beats the
+OS preference and persists in `localStorage`).
+
+```html
+<button class="theme-toggle fixed" id="theme-toggle" aria-label="Toggle dark mode">
+  <svg viewBox="0 0 16 16" aria-hidden="true">
+    <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M8 1.5 A6.5 6.5 0 0 1 8 14.5 Z" fill="currentColor"/>
+  </svg>
+  <span id="theme-label">Dark</span>
+</button>
+
+<script>
+  (() => {
+    const root = document.documentElement;
+    const media = matchMedia('(prefers-color-scheme: dark)');
+    const stored = localStorage.getItem('theme');        // 'light' | 'dark' | null
+    if (stored) root.dataset.theme = stored;             // null ⇒ stay on OS default
+
+    // current effective theme: explicit override, else whatever the OS says
+    const effective = () => root.dataset.theme || (media.matches ? 'dark' : 'light');
+    const label = document.getElementById('theme-label');
+    // label names the *action* — click while light shows "Dark", and vice versa
+    const render = () => { label.textContent = effective() === 'dark' ? 'Light' : 'Dark'; };
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const next = effective() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      render();
+    });
+    media.addEventListener('change', render);            // keep label honest while on auto
+    render();
+  })();
+</script>
+```
+
+**Notes:** the contrast-circle icon (half-filled) reads correctly in both themes
+via `currentColor`, so nothing needs swapping — only the text label flips. Place
+the button with `.fixed` for a corner anchor, or drop it (without `.fixed`) into
+a `.toolbar` / `.sec-head`. To default a single artifact to dark regardless of
+OS, set `<html lang="en" data-theme="dark">` and the script still lets the user
+toggle back. `.theme-toggle` is defined in `styles.css`.

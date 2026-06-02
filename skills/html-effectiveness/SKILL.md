@@ -29,6 +29,7 @@ Information density (tables, SVG, real layout). Sharing (open in any browser, li
 - **Editors must export.** Any artifact that lets the user edit/sort/toggle/tune ends with a "Copy as X" button (see `patterns.md` §9) that turns UI state into pasteable text.
 - **Mobile-responsive** by default. The demos all are; a `@media (max-width: 720px)` breakpoint is the floor.
 - **No emojis** unless the user asks. No filler text — fill with realistic, specific content.
+- **Stay token-driven for dark mode.** `styles.css` ships an automatic dark theme via `@media (prefers-color-scheme: dark)` that remaps the palette tokens — every component inherits it for free. Any local CSS or inline-SVG color you add **must** use `var(--…)` tokens, never literal hex/rgba, or it will break in dark mode. (Shadows are tokenized too: use `var(--shadow-hover)`.) Add a manual light/dark switch **only when the user asks** — drop in the `theme-toggle` pattern (`patterns.md` §12), which overrides the OS preference via `data-theme`.
 - **Default filename:** `<topic-slug>.html` in the current working directory unless the user specifies otherwise.
 
 ## Use-case router
@@ -75,3 +76,4 @@ If nothing in this table fits, improvise from `styles.css` and `patterns.md` dir
 - Editor artifact with no copy/export button.
 - Fake or padded content to make the page look fuller. Better short and specific than long and vague.
 - Re-declaring `styles.css` classes in the artifact's local `<style>`. Local CSS is for layout-specific exceptions only.
+- Hardcoded hex/rgba colors in local CSS or SVG fills/strokes — they ignore the token remap and break dark mode. Always reach for `var(--…)`.

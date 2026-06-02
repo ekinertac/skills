@@ -10,10 +10,17 @@
  *
  * Contents in order:
  *   1. :root design tokens (palette, type stacks, shape)
- *   2. Reset
- *   3. Body defaults
- *   4. Typography (headings, code/pre)
- *   5. Utility classes
+ *   2. Dark mode — remaps the palette tokens under prefers-color-scheme: dark
+ *   3. Reset
+ *   4. Body defaults
+ *   5. Typography (headings, code/pre)
+ *   6. Utility classes
+ *
+ * Dark mode is automatic and token-only: because every component below reads
+ * var(--token) rather than a literal color, the single @media block in §2 is
+ * the entire dark theme. Artifacts need no JS and no extra markup to get it.
+ * Keep new components token-driven (no hardcoded hex in component rules) so
+ * they inherit dark mode for free.
  */
 
 :root {
@@ -44,6 +51,60 @@
   --radius-panel: 12px;
   --radius-row:   8px;
   --border:       1.5px solid var(--g300);
+
+  /* shadows live in tokens too, so the dark theme is a pure token swap */
+  --shadow-hover: 0 10px 30px rgba(20, 20, 19, 0.10);
+
+  color-scheme: light;
+}
+
+/* ── dark mode ───────────────────────── */
+/* The dark theme is nothing but a palette-token remap — every component reads
+   var(--token), so swapping the tokens swaps the whole UI. Two triggers share
+   one token list (the %dark-tokens% block, kept identical in both — edit both):
+     1. OS prefers dark AND the artifact hasn't forced light via the toggle
+     2. the toggle has explicitly forced dark (data-theme="dark")
+   Surfaces follow a depth convention: recessed panels (--g100) sit below the
+   page (--ivory); raised cards (--paper) sit above it. Ink/border tokens keep
+   their light-mode *roles* (slate = primary text, g700 = secondary, g500 =
+   muted) but flip to the dark end of the scale. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* %dark-tokens% — keep identical to the [data-theme="dark"] block below */
+    --ivory:   #1A1815;   /* page background */
+    --paper:   #262218;   /* raised cards — lighter than the page */
+    --slate:   #F2F0E9;   /* primary text / ink */
+    --clay:    #E08A6A;   /* accents — brightened for the dark ground */
+    --clay-d:  #C56F4F;
+    --oat:     #383026;   /* warm fill for badges / panels */
+    --olive:   #94A974;
+    --rust:    #CB6055;
+    --g100:    #14120E;   /* recessed panels (prompt-box, thumb) — below page */
+    --g200:    #322E25;   /* hairline borders */
+    --g300:    #423C32;   /* standard borders */
+    --g500:    #9A988E;   /* muted labels */
+    --g700:    #C9C6BC;   /* secondary text */
+    --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  /* %dark-tokens% — keep identical to the prefers-color-scheme block above */
+  --ivory:   #1A1815;
+  --paper:   #262218;
+  --slate:   #F2F0E9;
+  --clay:    #E08A6A;
+  --clay-d:  #C56F4F;
+  --oat:     #383026;
+  --olive:   #94A974;
+  --rust:    #CB6055;
+  --g100:    #14120E;
+  --g200:    #322E25;
+  --g300:    #423C32;
+  --g500:    #9A988E;
+  --g700:    #C9C6BC;
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
 }
 
 /* ── reset ───────────────────────────── */
@@ -141,7 +202,7 @@ hr.rule {
 }
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(20, 20, 19, 0.10);
+  box-shadow: var(--shadow-hover);
   border-color: var(--slate);
 }
 .card .body { padding: 18px 20px 16px; flex: 1; display: flex; flex-direction: column; }
@@ -274,6 +335,31 @@ hr.rule {
   margin-bottom: 14px;
   border-bottom: 1.5px solid var(--g200);
 }
+
+/* ── utility: theme toggle ───────────── */
+/* canonical: patterns.md §12. A mono-labelled button that flips data-theme on
+   <html>. Token-driven, so it styles itself correctly in both themes. The
+   contrast-circle icon needs no light/dark swap — only the text label flips. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--g700);
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius-row);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+.theme-toggle:hover { border-color: var(--slate); color: var(--slate); }
+.theme-toggle svg { width: 15px; height: 15px; display: block; }
+/* drop the toggle in a corner when there's no toolbar to host it */
+.theme-toggle.fixed { position: fixed; top: 18px; right: 18px; z-index: 20; }
 
 /* ── utility: highlights list ────────── */
 /* canonical: 11-status-report.html
