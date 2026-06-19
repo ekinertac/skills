@@ -16,7 +16,16 @@ npx skills add ekinertac/skills/skills/tweak-panel
 npx skills add ekinertac/skills/skills/macos-notarize
 npx skills add ekinertac/skills/skills/pre-mortem
 npx skills add ekinertac/skills/skills/html-effectiveness
+npx skills add ekinertac/skills/skills/recreating-amp-tones
 ```
+
+### recreating-amp-tones
+
+Recreate a famous guitar/bass tone with whatever amp-sim plugins you already have. Amp-sim agnostic: discovers installed sims, finds where their (often binary, despite the `.xml`) preset files actually live, researches the real rig on tone forums (and works around their Cloudflare bot-walls), then clones-and-patches a preset that approximates it. Includes how to grab raw guitar DI stems for testing.
+
+[→ View skill](./skills/recreating-amp-tones/SKILL.md)
+
+---
 
 ### tweak-panel
 
