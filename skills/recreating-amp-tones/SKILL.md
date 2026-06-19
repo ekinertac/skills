@@ -101,9 +101,13 @@ open(DST,"wb").write(bytes(data))                 # DST = NEW file in the Phase-
 ## Bonus — DI stems for testing (no playing required)
 
 Dry direct-input guitar to run through the new preset:
-- **GitHub (curl-able, instant):** reamp/modeling repos store `*-input.wav` (dry DI) vs `*-target.wav` (amped). e.g. `GuitarML/Automated-GuitarAmpModelling` `Data/train/*-input.wav`, `GuitarML/PedalNetRT/data/ts9_test1_in_FP32.wav`. Find them via the GitHub trees API, download with `curl -sL <raw url>`.
+**Trust your ears — many "DIs" are programmed, not played.** A lot of catalog "DIs" (especially note-for-note covers of famous albums) are **MIDI run through a sampled-guitar VSTi** (Shreddage/Ample-type), not a human recording. They're often dressed up with humanized timing, mains hum, and round-robin samples specifically to *look* real — which defeats automated forensics (onset-jitter, repeat-correlation, hum, DC-offset tests all come back ambiguous). **The only reliable test is listening:** programmed guitar lacks organic feel (pick attack variation, fret/finger noise, micro-dynamics). Audition before trusting any DI.
+
+- **Verified-organic, curl-able (preferred):** amp-modeling/reamp repos store *real recorded* `*-input.wav` (dry DI) vs `*-target.wav` (amped) — these are genuine playing used to train captures. e.g. `GuitarML/Automated-GuitarAmpModelling` `Data/train/*-input.wav`, `GuitarML/PedalNetRT/data/ts9_test1_in_FP32.wav`. Find via the GitHub trees API, download with `curl -sL <raw url>`. Real studio multitracks (Cambridge-MT *actual band* recordings, not covers) are also organic.
+- **Omega Station "Multitracks & DIs List" (large catalog, audition first):** a ~520-row spreadsheet (find the CSV export) with `GTR DI` / `BASS DI` Y/N flags, genre, and a per-entry download link. Convenient and broad, but its classic-album entries are **cover re-creations and frequently programmed/sampled, not organic** — useful only after you've listened and confirmed. Parse with Python `csv`, filter `GTR DI == 'Y'` + a download link, match on genre.
+- **Getting past the blogspot redirect:** most Omega Station download links point at an `omegastationmusic.blogspot.com` landing page, not a file. `curl` the page, grep for the embedded `drive.google.com/file/d/<ID>` link, then download the actual file from the direct endpoint `https://drive.usercontent.google.com/download?id=<ID>&export=download&confirm=t` (a `HEAD` first reveals the real filename + size via `content-disposition`/`content-length`). Unpack `.7z` with `bsdtar -xf` (built into macOS).
 - **Browser only (bot-walled):** Cambridge-MT "Mixing Secrets" library (filter Genre → Hard Rock & Metal, look for a "Gtr DI" track), UltimateMetal "Free Multitracks & DIs" list.
-- DIs are usually mono and quiet — nudge input gain; double-track + hard-pan L/R for a realistic wall.
+- DIs are usually mono and quiet — nudge input gain; real album DIs often come **double-tracked** (`Guitar 1` / `Guitar 2`) — hard-pan them L/R for the wall.
 
 ## Common Mistakes
 
@@ -117,5 +121,6 @@ Dry direct-input guitar to run through the new preset:
 | Cloning from a different plugin version | Binary layout drifts between versions — clone from a same-version preset |
 | Declaring done after a byte-level round-trip | Also load it and confirm it makes sound (auditory check) |
 | Copying knob values from a forum verbatim | Values are starting points; A/B against the record and tune by ear |
+| Trusting a downloaded "DI" without listening | Many catalog DIs are MIDI→sampled-guitar VSTi dressed to look real; only your ears catch it — audition first |
 | `WebFetch`-ing forums and giving up on 403 | Use `WebSearch` summaries; cite interviews over forum claims |
 | Expecting an exact match | Sims model different amps than the original rig — set expectations: it's an approximation |
