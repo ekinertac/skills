@@ -16,6 +16,7 @@ npx skills add ekinertac/skills/tweak-panel
 npx skills add ekinertac/skills/macos-notarize
 npx skills add ekinertac/skills/pre-mortem
 npx skills add ekinertac/skills/html-effectiveness
+npx skills add ekinertac/skills/visual-plan
 npx skills add ekinertac/skills/recreating-amp-tones
 ```
 
@@ -56,6 +57,14 @@ Assume the plan already failed 6 months from now — then work backward. Spawns 
 Turn document-shaped requests into single shareable HTML artifacts instead of walls of markdown — for plans, PR reviews, status reports, design systems, custom editors, and more. Routes the request to one of 19 use-case templates drawn from the demos in `references/`, composes the artifact from a small library of HTML building blocks (`patterns.md`), and links a shared `styles.css` so output stays compact. Inspired by [@trq212](https://x.com/trq212)'s post on the unreasonable effectiveness of HTML.
 
 [→ View skill](./html-effectiveness/SKILL.md)
+
+---
+
+### visual-plan
+
+Turn an implementation plan into a reviewable single-page HTML artifact instead of a wall of chat markdown — a local, dependency-free take on [BuilderIO's hosted visual-plan](https://github.com/BuilderIO/skills/tree/main/skills/visual-plan) (no MCP connector, no hosted app). Owns the planning discipline (research-first, name real files, commit to hard-to-reverse decisions, open questions at the bottom with recommended defaults, plan-as-approval-gate) and delegates all rendering to `html-effectiveness`, which composes the `plan.html` + `./styles.css` pair from its implementation-plan demo. Leads with HTML/SVG screen mockups for UI plans, stays document-only for backend/architecture.
+
+[→ View skill](./visual-plan/SKILL.md)
 
 ## Hooks
 
