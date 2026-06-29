@@ -1,10 +1,9 @@
 # skills
 
-A collection of agent skills and Claude Code hooks.
+A collection of agent skills.
 
 ```
 <skill-name>/  ← each reusable agent skill lives at the repo root (installed via npx)
-hooks/         ← Claude Code hooks, symlinked from ~/.claude/hooks/
 ```
 
 ## Skills
