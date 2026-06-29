@@ -65,22 +65,3 @@ Turn document-shaped requests into single shareable HTML artifacts instead of wa
 Turn an implementation plan into a reviewable single-page HTML artifact instead of a wall of chat markdown — a local, dependency-free take on [BuilderIO's hosted visual-plan](https://github.com/BuilderIO/skills/tree/main/skills/visual-plan) (no MCP connector, no hosted app). Owns the planning discipline (research-first, name real files, commit to hard-to-reverse decisions, open questions at the bottom with recommended defaults, plan-as-approval-gate) and delegates all rendering to `html-effectiveness`, which composes the `plan.html` + `./styles.css` pair from its implementation-plan demo. Leads with HTML/SVG screen mockups for UI plans, stays document-only for backend/architecture.
 
 [→ View skill](./visual-plan/SKILL.md)
-
-## Hooks
-
-Claude Code hooks. Each script lives here under git and is symlinked from `~/.claude/hooks/<name>` so Claude Code's hook resolver picks them up. Install with:
-
-```bash
-ln -s ~/Code/skills/hooks/auto-title.sh     ~/.claude/hooks/auto-title.sh
-ln -s ~/Code/skills/hooks/session-digest.sh ~/.claude/hooks/session-digest.sh
-```
-
-Then register each in `~/.claude/settings.json` under the right event (see each script's header comment for the event it expects).
-
-### auto-title.sh
-
-Runs on `UserPromptSubmit`. The first time you submit a prompt in a fresh session, generates a 5–10 word title via `claude -p` (haiku alias, `--no-session-persistence`) and appends a `{"type":"custom-title",...}` event into the transcript — the same shape `/rename` writes manually. Idempotent (skips if a custom-title is already present). Backgrounds the title-gen call so prompt submission isn't blocked.
-
-### session-digest.sh
-
-Runs on `SessionEnd`. Generates a markdown digest of the session and writes it into the Tolaria vault under `wiki/sessions/`. Captures the conversation arc (TL;DR, topics, mental models, decisions, pushback, gotchas, open threads) so a future session 6 months from now can recover context that would otherwise vanish on `/clear` or exit. Backgrounded with `disown` so SessionEnd doesn't block UI exit.
