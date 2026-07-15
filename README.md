@@ -17,6 +17,7 @@ npx skills add ekinertac/skills/pre-mortem
 npx skills add ekinertac/skills/html-effectiveness
 npx skills add ekinertac/skills/visual-plan
 npx skills add ekinertac/skills/recreating-amp-tones
+npx skills add ekinertac/skills/cli-design
 ```
 
 ### recreating-amp-tones
@@ -64,3 +65,11 @@ Turn document-shaped requests into single shareable HTML artifacts instead of wa
 Turn an implementation plan into a reviewable single-page HTML artifact instead of a wall of chat markdown — a local, dependency-free take on [BuilderIO's hosted visual-plan](https://github.com/BuilderIO/skills/tree/main/skills/visual-plan) (no MCP connector, no hosted app). Owns the planning discipline (research-first, name real files, commit to hard-to-reverse decisions, open questions at the bottom with recommended defaults, plan-as-approval-gate) and delegates all rendering to `html-effectiveness`, which composes the `plan.html` + `./styles.css` pair from its implementation-plan demo. Leads with HTML/SVG screen mockups for UI plans, stays document-only for backend/architecture.
 
 [→ View skill](./visual-plan/SKILL.md)
+
+---
+
+### cli-design
+
+Design and review command-line tools against established conventions, condensed from [clig.dev](https://clig.dev). `SKILL.md` is a scannable checklist by area (help text, stdout/stderr split, exit codes, flags vs args, TTY-aware color/output, prompts, subcommands, config precedence, env vars, naming); `reference.md` holds the full rule set with the `jq`/`git`/`docker` examples. Fires when building a new CLI or auditing an existing one's UX, and includes a fast pipe-it / force-an-error review pass.
+
+[→ View skill](./cli-design/SKILL.md)
