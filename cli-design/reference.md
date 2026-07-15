@@ -4,6 +4,8 @@ Condensed from the [Command Line Interface Guidelines](https://clig.dev) (clig.d
 
 Scope: single-purpose and multi-command CLI programs. Not full-screen TUI apps (vim, emacs) or GUIs.
 
+**Two operators.** These rules serve humans at a keyboard and LLM agents driving the shell. The original guide predates the agent audience, so where it says "human-first, machine-second" for *output formatting*, read the machine side as a first-class consumer now, not an afterthought. The hard constraint agents add: every capability must be reachable non-interactively (flags/args/stdin), because an agent cannot answer a prompt, choose from a menu, or drive a full-screen UI. Interactive affordances are an optional convenience layered on top for humans; they must never be the only path to an action.
+
 ---
 
 ## The Basics
@@ -92,7 +94,10 @@ Terminology: **args** are positional (`cp foo bar`, order matters). **Flags** ar
 
 ## Interactivity
 
+Every interactive path must have a non-interactive twin. Agents, scripts, and CI can't answer prompts or navigate menus — if the only way to reach a result is interactive, those operators are locked out. Treat prompts and pickers as a convenience for humans that sits on top of a fully flag-driven core, never as the sole entry point.
+
 - **Interactive elements only when stdin is a TTY** — otherwise a prompt can't work; throw an error naming the flag to pass.
+- **A flag-driven equivalent for every wizard/menu/picker** — the same outcome reachable in one non-interactive invocation.
 - **Honor `--no-input`** — disable all prompts; if input is required, fail and say which flag provides it.
 - **Don't echo passwords** — turn off terminal echo (your language has a helper).
 - **Let the user escape.** Make exit obvious (don't be vim). Keep Ctrl-C working during network I/O. For wrappers where Ctrl-C can't quit (ssh, tmux, telnet), document the escape sequence.

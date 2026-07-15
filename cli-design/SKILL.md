@@ -1,6 +1,6 @@
 ---
 name: cli-design
-description: 'Design and review command-line tools that follow established CLI conventions: help text, stdout/stderr split, exit codes, flags vs args, errors humans can act on, TTY-aware output/color, prompts, subcommands, config precedence, env vars, and naming. Use when building a new CLI or auditing an existing one''s UX. Trigger phrases: "build a CLI", "design a command-line tool", "review my CLI", "is this CLI well designed", "add a subcommand", "CLI help text", "argparse/click/cobra/clap", "exit codes", "stdout vs stderr", "cli flags".'
+description: 'Design and review command-line tools that follow established CLI conventions: help text, stdout/stderr split, exit codes, flags vs args, errors humans can act on, TTY-aware output/color, prompts, subcommands, config precedence, env vars, and naming. Use when building a new CLI or auditing an existing one''s UX. Also covers making a CLI agent-friendly: fully operable non-interactively so LLM agents, scripts, and CI can drive it. Trigger phrases: "build a CLI", "design a command-line tool", "review my CLI", "is this CLI well designed", "make my CLI agent-friendly", "non-interactive CLI", "add a subcommand", "CLI help text", "argparse/click/cobra/clap", "exit codes", "stdout vs stderr", "cli flags".'
 ---
 
 # CLI Design
@@ -9,7 +9,15 @@ Conventions for command-line programs, based on the [Command Line Interface Guid
 
 ## The one idea underneath everything
 
-Today's CLIs are **human-first**: a text UI a person converses with, not just a function other programs call. Design for the human at the keyboard first, then keep it composable (pipes, scripts, CI) so it's still a well-behaved part of a larger system. Those two goals rarely conflict; most of the rules below are about hitting both at once.
+A CLI today has two kinds of operators: **humans** at a keyboard, and **LLM agents** driving the shell. Design for both. The human wants a text UI that's pleasant to converse with; the agent wants every capability reachable without a human in the loop. These rarely conflict, and most rules below hit both at once.
+
+**Non-interactive operability is a hard requirement, not a nice-to-have.** Agents (and scripts, and CI) can't answer a prompt, pick from a menu, or drive a full-screen UI. If the *only* way to do something is interactive, an agent simply cannot do it. So:
+
+- Every action must be fully doable through flags/args/stdin, with no prompt required — ever.
+- Prompts are an optional convenience for humans, layered on top; when stdin isn't a TTY, skip them and require the flags instead (fail with a message naming the flag, don't hang).
+- Every confirmation needs a scriptable bypass (`--force`, or `--confirm="name"` for severe actions).
+- Offer machine-readable output (`--json`, `--plain`) so an agent can parse results instead of scraping formatted text.
+- Keep exit codes meaningful and errors on stderr with actionable text — that's how an agent detects and recovers from failure.
 
 Guiding principles: follow existing conventions so the tool is guessable; say just enough (not silent, not a firehose); make functionality discoverable through help and suggestions; treat each run as one turn in a conversation; feel robust. Break a convention only with intention, and document it when you do.
 
@@ -68,8 +76,9 @@ Skim the relevant block. Each line is a rule; `reference.md` has the why and the
 - Support `-` to mean stdin/stdout for file args.
 - **Never read secrets from a flag** (leaks to `ps`/history) — use `--x-file`, stdin, or a pipe.
 
-**Interactivity**
-- Prompt only when stdin is a TTY; honor `--no-input`.
+**Interactivity** (every interactive path needs a non-interactive twin)
+- Prompt only when stdin is a TTY; honor `--no-input`. When not a TTY, don't prompt — require the flag and fail with a message naming it.
+- Any menu/picker/wizard must have a flag-driven equivalent that reaches the same result in one non-interactive invocation. An agent can't navigate the interactive version.
 - Don't echo passwords; make Ctrl-C always work and make it clear how to escape.
 
 **Subcommands**
